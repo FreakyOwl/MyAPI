@@ -1,0 +1,369 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: My Library API
+  description: A simple API for a library
+servers:
+  - url: https://mylibapi.io/v1
+paths:
+  /books:
+    get:
+      summary: Returns a full list of books in library
+      tags:
+        - books
+      parameters:
+        - $ref: '#/components/parameters/genre'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/author'
+      responses:
+        '200':
+          description: Successfully returned a list of books
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/bookScheme'
+              examples:
+                bookExample:
+                  $ref: '#/components/examples/bookExample'
+        '400':
+          $ref: '#/components/responses/Code400'
+    post:
+      summary: Adds a new book
+      tags:
+        - books
+      security:
+        - MyAPIKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bookScheme'
+            examples:
+              bookExample:
+                $ref: '#/components/examples/bookExample'
+      responses:
+        '200':
+          description: New book was added successfully
+        '400':
+          $ref: '#/components/responses/Code400'
+        '401':
+          $ref: '#/components/responses/Code401'
+    put:
+      summary: Updates an existing book
+      tags:
+        - books
+      security:
+        - MyAPIKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/bookScheme'
+            examples:
+              bookExample:
+                $ref: '#/components/examples/bookExample'
+      responses:
+        '201':
+          description: The book was updated successfully
+        '400':
+          $ref: '#/components/responses/Code400'
+        '401':
+          $ref: '#/components/responses/Code401'
+  /books/{book_ID}:
+    get:
+      summary: Returns information about a book using ID
+      tags:
+        - books
+      parameters:
+        - name: book_ID
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 21235
+      responses:
+        '200':
+          description: Successfully returned a book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/1bookScheme_NoID'
+              examples:
+                bookExample_NoID:
+                  $ref: '#/components/examples/bookExample_NoID'
+        '400':
+          $ref: '#/components/responses/Code400'
+  /authors:
+    get:
+      summary: Returns a full list of authors
+      tags:
+        - authors
+      parameters:
+        - $ref: '#/components/parameters/genre'
+        - $ref: '#/components/parameters/limit'
+      responses:
+        '200':
+          description: Successfully returned a list of authors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorScheme'
+              examples:
+                authorExample:
+                  $ref: '#/components/examples/authorExample'
+        '400':
+          $ref: '#/components/responses/Code400'
+    post:
+      summary: Adds a new author
+      tags:
+        - authors
+      security:
+        - MyAPIKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authorScheme'
+            examples:
+              authorExample:
+                $ref: '#/components/examples/authorExample'
+      responses:
+        '200':
+          description: New author was added successfully
+        '400':
+          $ref: '#/components/responses/Code400'
+        '401':
+          $ref: '#/components/responses/Code401'
+    put:
+      summary: Updates an existing author
+      tags:
+        - authors
+      security:
+        - MyAPIKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authorScheme'
+            examples:
+              authorExample:
+                $ref: '#/components/examples/authorExample'
+      responses:
+        '200':
+          description: The author was updated successfully
+        '400':
+          $ref: '#/components/responses/Code400'
+        '401':
+          $ref: '#/components/responses/Code401'
+  /authors/{author_ID}:
+    get:
+      summary: Returns information about an author using ID
+      tags:
+        - authors
+      parameters:
+        - $ref: '#/components/parameters/authorID_req'
+      responses:
+        '200':
+          description: Successfully returned an author
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/1authorScheme_NoID'
+              examples:
+                authorExample_NoID:
+                  $ref: '#/components/examples/authorExample_NoID'
+        '400':
+          $ref: '#/components/responses/Code400'
+components:
+  parameters:
+    genre:
+      name: genre
+      in: query
+      description: Returns authors writing in a particular genre
+      schema:
+        type: string
+      example: fantasy
+    limit:
+      name: limit
+      in: query
+      description: Limits the number of authors returned
+      schema:
+        type: integer
+      example: 20
+    authorID_req:
+      name: author_ID
+      in: path
+      required: true
+      schema:
+        type: integer
+      example: 13456
+    author:
+      name: author
+      in: query
+      description: Returns books by a particular author
+      schema:
+        type: string
+      example: J.R.R.Tolkien
+  schemas:
+    bookScheme:
+      type: array
+      items:
+        type: object
+        properties:
+          book_ID:
+            type: integer
+          book_name:
+            type: string
+          book_genres:
+            type: array
+            items:
+              type: string
+          author_ID:
+            type: integer
+          author_name:
+            type: string
+          publishing_year:
+            type: integer
+          summary:
+            type: string
+    1bookScheme_NoID:
+      type: object
+      properties:
+        book_name:
+          type: string
+        book_genres:
+          type: array
+          items:
+            type: string
+        author_ID:
+          type: integer
+        author_name:
+          type: string
+        publishing_year:
+          type: integer
+        summary:
+          type: string
+    authorScheme:
+      type: array
+      items:
+        type: object
+        properties:
+          author_ID:
+            type: integer
+          author_name:
+            type: string
+          book_genres:
+            type: array
+            items:
+              type: string
+          book_IDs:
+            type: array
+            items:
+              type: integer
+          bio:
+            type: string
+    1authorScheme_NoID:
+      type: object
+      properties:
+        author_name:
+          type: string
+        book_genres:
+          type: array
+          items:
+            type: string
+        book_IDs:
+          type: array
+          items:
+            type: integer
+        bio:
+          type: string
+  securitySchemes:
+    MyAPIKeyAuth:
+      type: apiKey
+      in: query
+      name: MY-API-KEY
+  responses:
+    Code400:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            example:
+              message: Invalid request. Please try again.
+    Code401:
+      description: API key is missing or invalid
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            example:
+              message: Invalid API key. This request requires a valid API key to work properly.
+  examples:
+    bookExample:
+      value:
+        book_ID: 21234
+        book_name: The Hobbit, or There and Back Again
+        book_genres: [fantasy, juvenile, fiction]
+        author_ID: 12345
+        author_name: J.R.R.Tolkien
+        publishing_year: 1937
+        summary: >
+          Bilbo Baggins is a hobbit who enjoys a comfortable, unambitious life, rarely travelling further than the pantry
+          of his hobbit-hole in Bag End. But his contentment is disturbed when the wizard, Gandalf, and a company of 13
+          dwarves arrive on his doorstep one day, to whisk him away on a journey 'there and back again'. They have a plot
+          to raid the treasure hoard of Smaug the Magnificent, a large and very dangerous dragon.
+    bookExample_NoID:
+      value:
+        book_name: "The Movie Art of Syd Mead: Visual Futurist"
+        book_genres: [artbook, nonfiction, design, cinema]
+        author_ID: 13456
+        author_name: Syd Mead
+        publishing_year: 2017
+        summary: >
+          The Movie Art of Syd Mead: Visual Futurist represents the most extensive collection of Mead’s visionary work
+          ever printed, compiling hundreds of images, sketches and concept arts from a career spanning almost 40 years,
+          many of which have never been seen in print before. Each entry provides a unique insight into the processes
+          involved in Mead’s practice as well as illuminating the behind-the-scenes work involved in creating a fully
+          realized, cinematic depiction of the future. With such a plethora of images from the many genre-defining films
+          Mead has worked on, this is essential reading for film fans, artists and futurologists alike.
+    authorExample:
+      value:
+        author_ID: 12345
+        author_name: J.R.R.Tolkien
+        book_genres: [fantasy, fiction, juvenile]
+        book_IDs: [ 21234 ]
+        bio: >
+          John Ronald Reuel Tolkien was an English writer, poet, WWI veteran, philologist, and university professor, best
+          known as the author of the high fantasy classic works The Hobbit and The Lord of the Rings. Tolkien was Rawlinson
+          and Bosworth Professor of Anglo-Saxon at Oxford from 1925 to 1945, and Merton Professor of English language and
+          literature from 1945 to 1959. He was a close friend of C.S. Lewis. While many other authors had published works of
+          fantasy before Tolkien, the great success of The Hobbit and The Lord of the Rings led directly to a popular resurgence
+          of the genre. This has caused Tolkien to be popularly identified as the "father" of modern fantasy literature — or more
+          precisely, high fantasy. Tolkien's writings have inspired many other works of fantasy and have had a lasting effect on
+          the entire field. In 2008, The Times ranked him sixth on a list of "The 50 greatest British writers since 1945".
+    authorExample_NoID:
+      value:
+        author_name: Syd Mead
+        book_genres: [art, nonfiction, design, cinema]
+        book_IDs: [ 21235 ]
+        bio: >
+          Sydney Jay Mead, commonly Syd Mead, was an American industrial designer and neofuturistic
+          concept artist, widely known for his designs for science-fiction films such as Blade Runner, Aliens and Tron.
+          Mead's work has received wide note, and, in 2017, Curbed called Mead "the artist who illustrates the future".
+          Born on 18 July 1933 in Saint Paul, Minnesota, Mead graduated from high school in Colorado Springs, Colorado,
+          in 1951. After serving a three-year enlistment in the U.S. Army, Mead attended the Art Center School in Los
+          Angeles (now the Art Center College of Design, Pasadena), where he graduated in June 1959. He was recruited by
+          Ford Motor Company's Advanced Styling Studio by Elwood Engel. Mead left Ford after two years to illustrate books
+          and catalogues for companies including United States Steel, Celanese, Allis-Chalmers and Atlas Cement. In 1970,
+          he launched Syd Mead, Inc. in Detroit with clients including Philips Electronics.
