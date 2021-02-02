@@ -21,10 +21,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/bookScheme'
-              examples:
-                bookExample:
-                  $ref: '#/components/examples/bookExample'
+                $ref: '#/components/schemas/booksScheme'
         '400':
           $ref: '#/components/responses/Code400'
     post:
@@ -38,7 +35,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/bookScheme'
+              $ref: '#/components/schemas/1bookScheme'
             examples:
               bookExample:
                 $ref: '#/components/examples/bookExample'
@@ -60,7 +57,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/bookScheme'
+              $ref: '#/components/schemas/1bookScheme'
             examples:
               bookExample:
                 $ref: '#/components/examples/bookExample'
@@ -109,10 +106,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authorScheme'
-              examples:
-                authorExample:
-                  $ref: '#/components/examples/authorExample'
+                $ref: '#/components/schemas/authorsScheme'
         '400':
           $ref: '#/components/responses/Code400'
     post:
@@ -126,7 +120,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/authorScheme'
+              $ref: '#/components/schemas/1authorScheme'
             examples:
               authorExample:
                 $ref: '#/components/examples/authorExample'
@@ -148,7 +142,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/authorScheme'
+              $ref: '#/components/schemas/1authorScheme'
             examples:
               authorExample:
                 $ref: '#/components/examples/authorExample'
@@ -209,7 +203,7 @@ components:
         type: string
       example: J.R.R.Tolkien
   schemas:
-    bookScheme:
+    booksScheme:
       type: array
       items:
         type: object
@@ -230,6 +224,37 @@ components:
             type: integer
           summary:
             type: string
+      example:
+        - book_ID: 21234
+          book_name: The Hobbit, or There and Back Again
+          book_genres: [fantasy, juvenile, fiction]
+          author_ID: 12345
+          author_name: J.R.R.Tolkien
+          publishing_year: 1937
+          summary: >
+            Bilbo Baggins is a hobbit who enjoys a comfortable, unambitious life, rarely travelling further than the pantry
+            of his hobbit-hole in Bag End. But his contentment is disturbed when the wizard, Gandalf, and a company of 13
+            dwarves arrive on his doorstep one day, to whisk him away on a journey 'there and back again'. They have a plot
+            to raid the treasure hoard of Smaug the Magnificent, a large and very dangerous dragon.
+    1bookScheme:
+      type: object
+      properties:
+        book_ID:
+          type: integer
+        book_name:
+          type: string
+        book_genres:
+          type: array
+          items:
+            type: string
+        author_ID:
+          type: integer
+        author_name:
+          type: string
+        publishing_year:
+          type: integer
+        summary:
+          type: string
     1bookScheme_NoID:
       type: object
       properties:
@@ -247,7 +272,7 @@ components:
           type: integer
         summary:
           type: string
-    authorScheme:
+    authorsScheme:
       type: array
       items:
         type: object
@@ -266,6 +291,37 @@ components:
               type: integer
           bio:
             type: string
+      example:
+        - author_ID: 12345
+          author_name: J.R.R.Tolkien
+          book_genres: [fantasy, fiction, juvenile]
+          book_IDs: [ 21234 ]
+          bio: >
+            John Ronald Reuel Tolkien was an English writer, poet, WWI veteran, philologist, and university professor, best
+            known as the author of the high fantasy classic works The Hobbit and The Lord of the Rings. Tolkien was Rawlinson
+            and Bosworth Professor of Anglo-Saxon at Oxford from 1925 to 1945, and Merton Professor of English language and
+            literature from 1945 to 1959. He was a close friend of C.S. Lewis. While many other authors had published works of
+            fantasy before Tolkien, the great success of The Hobbit and The Lord of the Rings led directly to a popular resurgence
+            of the genre. This has caused Tolkien to be popularly identified as the "father" of modern fantasy literature — or more
+            precisely, high fantasy. Tolkien's writings have inspired many other works of fantasy and have had a lasting effect on
+            the entire field. In 2008, The Times ranked him sixth on a list of "The 50 greatest British writers since 1945".
+    1authorScheme:
+      type: object
+      properties:
+        author_ID:
+          type: integer
+        author_name:
+          type: string
+        book_genres:
+          type: array
+          items:
+            type: string
+        book_IDs:
+          type: array
+          items:
+            type: integer
+        bio:
+          type: string
     1authorScheme_NoID:
       type: object
       properties:
@@ -312,17 +368,17 @@ components:
   examples:
     bookExample:
       value:
-        book_ID: 21234
-        book_name: The Hobbit, or There and Back Again
-        book_genres: [fantasy, juvenile, fiction]
-        author_ID: 12345
-        author_name: J.R.R.Tolkien
-        publishing_year: 1937
-        summary: >
-          Bilbo Baggins is a hobbit who enjoys a comfortable, unambitious life, rarely travelling further than the pantry
-          of his hobbit-hole in Bag End. But his contentment is disturbed when the wizard, Gandalf, and a company of 13
-          dwarves arrive on his doorstep one day, to whisk him away on a journey 'there and back again'. They have a plot
-          to raid the treasure hoard of Smaug the Magnificent, a large and very dangerous dragon.
+       book_ID: 21234
+       book_name: The Hobbit, or There and Back Again
+       book_genres: [fantasy, juvenile, fiction]
+       author_ID: 12345
+       author_name: J.R.R.Tolkien
+       publishing_year: 1937
+       summary: >
+         Bilbo Baggins is a hobbit who enjoys a comfortable, unambitious life, rarely travelling further than the pantry
+         of his hobbit-hole in Bag End. But his contentment is disturbed when the wizard, Gandalf, and a company of 13
+         dwarves arrive on his doorstep one day, to whisk him away on a journey 'there and back again'. They have a plot
+         to raid the treasure hoard of Smaug the Magnificent, a large and very dangerous dragon.
     bookExample_NoID:
       value:
         book_name: "The Movie Art of Syd Mead: Visual Futurist"
