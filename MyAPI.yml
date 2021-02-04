@@ -40,8 +40,19 @@ paths:
               bookExample:
                 $ref: '#/components/examples/bookExample'
       responses:
-        '200':
+        '201':
           description: New book was added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  book_ID:
+                    type: integer
+                    example: 21234
+          links:
+            GetBookByID:
+              $ref: '#/components/links/GetBookByID'
         '400':
           $ref: '#/components/responses/Code400'
         '401':
@@ -64,6 +75,17 @@ paths:
       responses:
         '201':
           description: The book was updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  book_ID:
+                    type: integer
+                    example: 21234
+          links:
+            GetBookByID:
+              $ref: '#/components/links/GetBookByID'
         '400':
           $ref: '#/components/responses/Code400'
         '401':
@@ -71,6 +93,7 @@ paths:
   /books/{book_ID}:
     get:
       summary: Returns information about a book using ID
+      operationId: getBook
       tags:
         - books
       parameters:
@@ -125,8 +148,19 @@ paths:
               authorExample:
                 $ref: '#/components/examples/authorExample'
       responses:
-        '200':
+        '201':
           description: New author was added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  author_ID:
+                    type: integer
+                    example: 12345
+          links:
+            GetAuthorByID:
+              $ref: '#/components/links/GetAuthorByID'
         '400':
           $ref: '#/components/responses/Code400'
         '401':
@@ -147,8 +181,19 @@ paths:
               authorExample:
                 $ref: '#/components/examples/authorExample'
       responses:
-        '200':
+        '201':
           description: The author was updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  author_ID:
+                    type: integer
+                    example: 12345
+          links:
+            GetAuthorByID:
+              $ref: '#/components/links/GetAuthorByID'
         '400':
           $ref: '#/components/responses/Code400'
         '401':
@@ -156,6 +201,7 @@ paths:
   /authors/{author_ID}:
     get:
       summary: Returns information about an author using ID
+      operationId: getAuthor
       tags:
         - authors
       parameters:
@@ -173,6 +219,17 @@ paths:
         '400':
           $ref: '#/components/responses/Code400'
 components:
+  links:
+    GetBookByID:
+      operationId: getBook
+      parameters:
+        book_ID: '$response.body#/book_ID'
+      description: The `book_ID` value from the response can be used in `GET /books/{book_ID}`
+    GetAuthorByID:
+      operationId: getAuthor
+      parameters:
+        author_ID: '$response.body#/author_ID'
+      description: The `author_ID` value from the response can be used in `GET /authors/{author_ID}`
   parameters:
     genre:
       name: genre
