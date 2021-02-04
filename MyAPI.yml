@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: My Library API
-  description: A simple API for a library
+  description: A simple API for a book database
 servers:
   - url: https://mylibapi.io/v1
 paths:
@@ -73,7 +73,7 @@ paths:
               bookExample:
                 $ref: '#/components/examples/bookExample'
       responses:
-        '201':
+        '200':
           description: The book was updated successfully
           content:
             application/json:
@@ -181,7 +181,7 @@ paths:
               authorExample:
                 $ref: '#/components/examples/authorExample'
       responses:
-        '201':
+        '200':
           description: The author was updated successfully
           content:
             application/json:
